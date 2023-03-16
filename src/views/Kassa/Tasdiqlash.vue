@@ -166,7 +166,7 @@
                       <input
                         type="number"
                         min="0"
-                        :max="max"
+                        :max="max(item.paid_money)"
                         step="any"
                         class="form-control"
                         required
@@ -230,7 +230,7 @@
                     <input
                       type="number"
                       min="0"
-                      :max="max"
+                      :max="max(confirm_order.discount)"
                       step="any"
                       class="form-control form-control-sm"
                       :disabled="customer_type == 'none'"
@@ -247,7 +247,7 @@
                     <input
                       type="number"
                       min="0"
-                      :max="max"
+                      :max="max(loan_price)"
                       step="any"
                       class="form-control form-control-sm"
                       v-model="loan_price"
@@ -454,15 +454,6 @@ export default {
     balance() {
       return this.$props.order_balance;
     },
-    max() {
-      let number = this.balance;
-      number -= this.confirm_order.discount;
-      number -= this.loan_price;
-      this.confirm_order.money.forEach((item) => {
-        number -= item.paid_money;
-      });
-      return number;
-    },
   },
   watch: {
     customer_type(type) {
@@ -482,6 +473,15 @@ export default {
     this.getCustomers();
   },
   methods: {
+    max(value) {
+      let number = this.balance;
+      number -= this.confirm_order.discount;
+      number -= this.loan_price;
+      this.confirm_order.money.forEach((item) => {
+        number -= item.paid_money;
+      });
+      return Number(number) + Number(value);
+    },
     getUsers() {
       this.$emit("setloading", true);
       users(this.branch_id, 0, 100)
