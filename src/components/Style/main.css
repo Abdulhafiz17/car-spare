@@ -19,7 +19,7 @@
 }
 
 #app {
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -34,7 +34,7 @@
 }
 
 #main-container {
-  height: 95vh;
+  height: 94vh;
 }
 
 #main-card {

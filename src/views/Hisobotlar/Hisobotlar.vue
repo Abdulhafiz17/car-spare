@@ -86,10 +86,31 @@
                 <span>Savdodan kirim</span>
                 <span>{{ _.format(item.income_trade_sum) + " so'm" }}</span>
               </li>
+              <ul class="list-group" v-if="item.incomes_trade.length">
+                <li
+                  class="list-group-item"
+                  v-for="item1 in item.incomes_trade"
+                  :key="item1"
+                  v-show="item1.sum_price"
+                >
+                  {{ _.format(item1.sum_price) + " so'm " + item1.type }}
+                </li>
+              </ul>
+              <hr />
               <li class="list-group-item">
                 <span>Nasiyadan kirim</span>
                 <span>{{ _.format(item.income_loan_sum) + " so'm" }}</span>
               </li>
+              <ul class="list-group" v-if="item.incomes_loan.length">
+                <li
+                  class="list-group-item"
+                  v-for="item1 in item.incomes_loan"
+                  :key="item1"
+                  v-show="item1.sum_price"
+                >
+                  {{ _.format(item1.sum_price) + " so'm " + item1.type }}
+                </li>
+              </ul>
               <hr />
               <li class="list-group-item">
                 <span>Chiqim</span>
