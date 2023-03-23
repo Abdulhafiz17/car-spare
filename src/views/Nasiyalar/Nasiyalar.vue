@@ -136,6 +136,18 @@
             </td>
           </tr>
         </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5">
+              <Pagination
+                :page="page"
+                :pages="pages"
+                :limit="limit"
+                @get="template == 'active' ? getLoansActive : getLoansClosed"
+              />
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   </div>
@@ -197,8 +209,10 @@ import {
   success,
   takeLoan,
 } from "@/components/Api/api";
+import Pagination from "@/components/Pagination/Pagination.vue";
 export default {
   name: "Nasiyalar",
+  components: { Pagination },
   emits: ["setloading"],
   data() {
     return {
