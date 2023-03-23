@@ -34,7 +34,7 @@ export default {
   },
   watch: {
     $route(to) {
-      document.title = `Car - spare - ${to.meta.title}`;
+      document.title = `Savdo - ${to.meta.title}`;
       this.setloading(true);
     },
   },
