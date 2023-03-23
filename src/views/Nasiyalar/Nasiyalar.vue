@@ -2,7 +2,9 @@
   <h3>Nasiyalar</h3>
   <div class="row">
     <div class="col-md-4"></div>
-    <div class="col-md-4 my-1"></div>
+    <div class="col-md-4 my-1 text-center">
+      Umumiy nasiya <strong>{{ _.format(sum_residual) + " so'm" }}</strong>
+    </div>
     <div class="col-md-4"></div>
   </div>
   <hr />
@@ -35,7 +37,7 @@
   </ul>
 
   <div class="tab-content pt-2">
-    <div class="responsive-y" style="height: 75vh">
+    <div class="responsive-y" style="height: 70vh">
       <table class="table table-sm table-hover">
         <thead>
           <tr>
@@ -213,6 +215,7 @@ export default {
       limit: 25,
       loans_active: [],
       loans_closed: [],
+      sum_residual: null,
       take_loan: {
         id: null,
         money: null,
@@ -246,6 +249,7 @@ export default {
           this.pages = Response.data.pages;
           this.limit = Response.data.limit;
           this.loans_active = Response.data.data;
+          this.sum_residual = Response.data.sum_loan_residual;
           this.$emit("setloading", false);
         })
         .catch((error) => {
