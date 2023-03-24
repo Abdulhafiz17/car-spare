@@ -438,6 +438,11 @@ export function loans(status, branch_id, customer_id, page, limit) {
     `get_loans/${status}?branch_id=${branch_id}&customer_id=${customer_id}&page=${page}&limit=${limit}`
   );
 }
+export function loansCustomer(status, branch_id, page, limit) {
+  return api.get(
+    `get_loans_customer/${status}?branch_id=${branch_id}&page=${page}&limit=${limit}`
+  );
+}
 export function takeLoan(data) {
   return api.post(`take_loan/${data.id}?money=${data.money}&type=${data.type}`);
 }
