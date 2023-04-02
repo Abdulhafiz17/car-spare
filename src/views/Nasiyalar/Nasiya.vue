@@ -121,6 +121,7 @@
                     >
                       <option value="naqd">naqd</option>
                       <option value="plastik">plastik</option>
+                      <option value="click">click</option>
                     </select>
                   </div>
                 </div>
