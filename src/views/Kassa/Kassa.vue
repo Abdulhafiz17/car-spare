@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import { catchError, tradeBalance } from "@/components/Api/api";
 import Orders from "./Buyurtmalar.vue";
 import Products from "./Mahsulotlar.vue";
 import Bar from "./Tasdiqlash.vue";

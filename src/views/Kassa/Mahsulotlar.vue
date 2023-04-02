@@ -15,16 +15,20 @@
             @focusout="barcode = null"
           />
           <div class="dropdown-menu mt-1 w-100" dropdown>
-            <div class="responsive-y" style="max-heigh: 20vh">
+            <div class="responsive-y" style="max-height: 30vh">
               <li
-                class="dropdown-item"
+                class="dropdown-item justify-content-between align-items-center"
+                style="display: flex"
                 v-for="item in products"
                 :key="item"
                 @click="checkProduct(item.Products.code)"
               >
-                {{
-                  `${item.category} - ${item.Products.product_type?.name} ${item.Products.product_type?.name2}`
-                }}
+                <span>
+                  {{
+                    `${item.category} - ${item.Products.product_type?.name} ${item.Products.product_type?.name2}`
+                  }}
+                </span>
+                <span>{{ `${item.sum_quantity} dona` }}</span>
               </li>
             </div>
           </div>
