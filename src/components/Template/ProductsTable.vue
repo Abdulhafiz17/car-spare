@@ -13,7 +13,11 @@
                   :key="item"
                   v-show="item.total_price"
                 >
-                  {{ _.format(item.total_price) + " " + item.currency }}
+                  {{
+                    _.format(formatPrice(item.total_price)) +
+                    " " +
+                    item.currency
+                  }}
                 </span>
               </div>
               <div class="col-md-6">
@@ -24,7 +28,11 @@
                   :key="item"
                   v-show="item.total_vitrina_price"
                 >
-                  {{ _.format(item.total_vitrina_price) + " " + item.currency }}
+                  {{
+                    _.format(formatPrice(item.total_vitrina_price)) +
+                    " " +
+                    item.currency
+                  }}
                 </span>
               </div>
             </div>
