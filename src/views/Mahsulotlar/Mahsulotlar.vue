@@ -19,7 +19,7 @@
     <template #price_true>
       <ProductsTable
         type="price_true"
-        table-height="73vh"
+        table-height="70vh"
         edit="true"
         barcode=""
         @setloading="setloading"
@@ -28,7 +28,7 @@
     <template #price_false>
       <ProductsTable
         type="price_false"
-        table-height="73vh"
+        table-height="70vh"
         edit="true"
         @setloading="setloading"
       />
@@ -36,12 +36,12 @@
     <template #quantity_false>
       <ProductsTable
         type="quantity_false"
-        table-height="73vh"
+        table-height="70vh"
         @setloading="setloading"
       />
     </template>
     <template #opened>
-      <OpenedProducts table-height="73vh" @setloading="setloading" />
+      <OpenedProducts table-height="70vh" @setloading="setloading" />
     </template>
   </tabs>
 </template>
