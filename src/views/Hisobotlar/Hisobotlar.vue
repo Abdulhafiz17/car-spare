@@ -28,12 +28,22 @@
           />
         </div>
         <div class="col-md-2">
-          <button
-            class="btn btn-sm btn-block btn-outline-primary"
-            @click="getStatistics()"
-          >
-            <i class="fa fa-search"></i>
-          </button>
+          <div class="btn-group btn-group-sm w-100">
+            <button
+              class="btn btn-sm btn-outline-primary"
+              @click="getStatistics()"
+            >
+              <i class="fa fa-search"></i>
+            </button>
+            <button
+              v-if="from_time && to_time"
+              class="btn btn-sm btn-outline-success"
+              data-toggle="modal"
+              data-target="#sum"
+            >
+              <i class="fa fa-money-bill"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -205,6 +215,105 @@
       </button>
     </template>
   </modal>
+
+  <modal id="sum">
+    <template #header>
+      <h4>Umumiy hisobot</h4>
+    </template>
+    <template #body>
+      <div class="card-body" v-for="item in history_sum" :key="item">
+        <strong>{{ item.day }}</strong>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <span>Savdo</span>
+            <span>{{
+              _.format(
+                item.trade_total_price + item.trade_from_comp_total_price
+              ) + " so'm"
+            }}</span>
+          </li>
+          <li class="list-group-item">
+            <span>Tan narx</span>
+            <span>{{
+              _.format(
+                item.trade_total_tan_narx + item.trade_from_comp_total_tan_narx
+              ) + " so'm"
+            }}</span>
+          </li>
+          <li class="list-group-item">
+            <span>Buyurtmadan chegirma</span>
+            <span>{{ _.format(item.order_discount) + " so'm" }}</span>
+          </li>
+          <li class="list-group-item">
+            <span>Mahsulotdan chegirma</span>
+            <span>{{
+              _.format(
+                item.trade_total_discount + item.trade_from_comp_total_discount
+              ) + " so'm"
+            }}</span>
+          </li>
+          <hr />
+          <li class="list-group-item">
+            <span>Savdodan kirim</span>
+            <span>{{ _.format(item.income_trade_sum) + " so'm" }}</span>
+          </li>
+          <ul class="list-group" v-if="item.incomes_trade.length">
+            <li
+              class="list-group-item"
+              v-for="item1 in item.incomes_trade"
+              :key="item1"
+              v-show="item1.sum_price"
+            >
+              {{ _.format(item1.sum_price) + " so'm " + item1.type }}
+            </li>
+          </ul>
+          <hr />
+          <li class="list-group-item">
+            <span>Nasiyadan kirim</span>
+            <span>{{ _.format(item.income_loan_sum) + " so'm" }}</span>
+          </li>
+          <ul class="list-group" v-if="item.incomes_loan.length">
+            <li
+              class="list-group-item"
+              v-for="item1 in item.incomes_loan"
+              :key="item1"
+              v-show="item1.sum_price"
+            >
+              {{ _.format(item1.sum_price) + " so'm " + item1.type }}
+            </li>
+          </ul>
+          <hr />
+          <li class="list-group-item">
+            <span>Chiqim</span>
+            <span>{{ _.format(item.expense_sum) + " so'm" }}</span>
+          </li>
+          <li class="list-group-item">
+            <span>Qaytarish chiqimi</span>
+            <span>{{ _.format(item.returned_price) + " so'm" }}</span>
+          </li>
+          <hr />
+          <li
+            class="list-group-item"
+            :class="
+              benefit(item) > 0
+                ? 'text-success'
+                : benefit(item) < 0
+                ? 'text-danger'
+                : ''
+            "
+          >
+            <span>{{ benefit(item) >= 0 ? "Foyda" : "Zarar" }}</span>
+            <span>{{ _.format(benefit(item)) + " so'm" }}</span>
+          </li>
+        </ul>
+      </div>
+    </template>
+    <template #footer>
+      <button class="btn btn-outline-danger" data-dismiss="modal">
+        <i class="far fa-circle-xmark"></i>
+      </button>
+    </template>
+  </modal>
 </template>
 
 <script>
@@ -231,6 +340,7 @@ export default {
         .toISOString()
         .substring(0, 10),
       history: [],
+      history_sum: [],
       date: "",
       orders: null,
       order_id: null,
@@ -260,7 +370,8 @@ export default {
       api
         .tradeStatistics(this.from_time, this.to_time, this.$route.params.id)
         .then((res) => {
-          this.history = res.data;
+          this.history = res.data.data;
+          this.history_sum = res.data.data_sum;
           this.$emit("setloading", false);
         })
         .catch((err) => {
