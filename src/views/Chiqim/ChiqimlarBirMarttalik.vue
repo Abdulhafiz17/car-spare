@@ -22,9 +22,18 @@
       </div>
     </div>
   </form>
-  <div class="responsive-y" style="max-height: 65vh">
+  <div class="responsive-y" style="max-height: 64vh">
     <table class="table table-sm table-hover">
       <thead>
+        <tr v-if="show_sum">
+          <th colspan="3">
+            Umumiy chiqim:
+            <span v-for="item in sum" :key="item">
+              <strong>{{ _.format(item.sum_expense) }}</strong>
+              {{ item.currency }}
+            </span>
+          </th>
+        </tr>
         <tr>
           <th>Summa</th>
           <th>Izoh</th>
@@ -73,6 +82,8 @@ export default {
       pages: 1,
       limit: 25,
       data: [],
+      sum: [],
+      show_sum: false,
     };
   },
   created() {
@@ -93,6 +104,9 @@ export default {
           this.pages = Response.data.pages;
           this.limit = Response.data.limit;
           this.data = Response.data.data;
+          this.sum = Response.data.sum_variable_expenses_data;
+          if (this.from_time && this.to_time) this.show_sum = true;
+          else this.show_sum = false;
           this.$emit("setloading", false);
         })
         .catch((error) => {
