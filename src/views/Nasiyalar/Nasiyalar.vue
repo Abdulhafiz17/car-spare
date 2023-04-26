@@ -59,6 +59,7 @@
             @click="
               customer = item;
               template1 = 'active';
+              loans = [];
               getLoansActive(0, 25);
             "
           >
@@ -98,6 +99,7 @@
             :class="template1 == 'active' ? 'active' : ''"
             @click="
               template1 = 'active';
+              loans = [];
               getLoansActive(0, 25);
             "
           >
@@ -110,6 +112,7 @@
             :class="template1 == 'closed' ? 'active' : ''"
             @click="
               template1 = 'closed';
+              loans = [];
               getLoansClosed(0, 25);
             "
           >
@@ -123,6 +126,22 @@
           <table class="table table-sm table-hover">
             <thead>
               <tr>
+                <th>
+                  <input
+                    type="checkbox"
+                    :checked="
+                      template1 == 'active'
+                        ? loans.length == loans_active.length
+                        : loans.length == loans_closed.length
+                    "
+                    @change="
+                      $event.target.checked
+                        ? (loans =
+                            template1 == 'active' ? loans_active : loans_closed)
+                        : (loans = [])
+                    "
+                  />
+                </th>
                 <th>Nasiya summasi</th>
                 <th v-if="template1 == 'active'">Qoldiq summa</th>
                 <th>Qaytarish sanasi</th>
@@ -136,6 +155,7 @@
                   : loans_closed"
                 :key="item"
               >
+                <td><input type="checkbox" v-model="loans" :value="item" /></td>
                 <td>
                   {{ _.format(item.Loans.money) + " so'm" }}
                 </td>
@@ -173,15 +193,102 @@
       </div>
     </template>
     <template #footer>
+      <div v-if="loans.length">
+        <strong>{{ _.format(sum_price) }}</strong> so'm
+      </div>
+      <button
+        v-if="loans.length"
+        class="btn btn-outline-primary"
+        data-dismiss="modal"
+        data-toggle="modal"
+        data-target="#pay"
+      >
+        <i class="far fa-circle-check"></i> Yakunlash
+      </button>
       <button class="btn btn-outline-danger" data-dismiss="modal">
         <i class="far fa-circle-xmark"></i>
       </button>
     </template>
   </modal>
+
+  <div class="modal fade" id="pay" data-backdrop="static">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>Nasiya uchun pul olish</h4>
+          <span>
+            <strong>{{ _.format(sum_price) }}</strong> so'm
+          </span>
+        </div>
+        <form @submit.prevent="postLoan()">
+          <div class="modal-body">
+            <div class="row gap-1">
+              <div class="col-12">
+                <div class="input-group input-group-sm">
+                  <input
+                    type="number"
+                    min="0"
+                    step="any"
+                    class="form-control"
+                    placeholder="summa"
+                    required
+                    disabled
+                    v-model="sum_price"
+                  />
+                  <div class="input-group-text">so'm</div>
+                  <div class="input-group-append">
+                    <select
+                      class="form-select form-select-sm"
+                      required
+                      v-model="payment_type"
+                    >
+                      <option hidden value="">to'lov turi</option>
+                      <option
+                        v-for="item1 in payment_types"
+                        :key="item1"
+                        :value="item1"
+                      >
+                        {{ item1 }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-outline-primary">
+              <i class="far fa-circle-check" />
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-danger"
+              data-dismiss="modal"
+              data-toggle="modal"
+              data-target="#loans"
+            >
+              <i class="far fa-circle-xmark" />
+            </button>
+            <button
+              v-show="false"
+              data-dismiss="modal"
+              close-payment-modal
+            ></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import { catchError, loans, loansCustomer } from "@/components/Api/api";
+import {
+  catchError,
+  loans,
+  loansCustomer,
+  success,
+  takeLoan,
+} from "@/components/Api/api";
 import Pagination from "@/components/Pagination/Pagination.vue";
 export default {
   name: "Nasiyalar",
@@ -216,12 +323,31 @@ export default {
       loans_active: [],
       loans_closed: [],
       sum_residual: null,
-      take_loan: {
-        id: null,
-        money: null,
-        type: "naqd",
-      },
+      loans: [],
+      payment_types: ["naqd", "plastik", "click"],
+      payment_type: "",
     };
+  },
+  computed: {
+    sum_price() {
+      let price = 0;
+      this.loans.forEach((item) => {
+        price += item.Loans.residual;
+      });
+      return price;
+    },
+    check() {
+      let loan = 0,
+        payment = 0;
+      this.loans.forEach((item) => {
+        loan += item.Loans.residual;
+      });
+      this.moneys.forEach((item) => {
+        payment += item.money;
+      });
+      if (loan == payment) return true;
+      else return false;
+    },
   },
   created() {
     this.getLoanCustomersActive(0, 25);
@@ -285,6 +411,34 @@ export default {
           this.$emit("setloading", false);
           catchError(error);
         });
+    },
+    postLoan() {
+      this.$emit("setloading", true);
+      let sum = this.sum_price,
+        data = [];
+      this.loans.forEach((item, i) => {
+        data.push({
+          id: item.Loans.id,
+          money: item.Loans.residual,
+          type: this.payment_type,
+        });
+        sum = sum - item.Loans.residual;
+        if (i == this.loans.length - 1) {
+          this.takeLoan(data)
+            .then((Response) => {
+              success("close-payment-modal").then(() => {
+                this.loans = [];
+                this.payment_type = "";
+                this.template = "active";
+                this.getLoanCustomersActive();
+              });
+            })
+            .catch((error) => {
+              this.$emit("setloading", false);
+              catchError(error);
+            });
+        }
+      });
     },
   },
 };

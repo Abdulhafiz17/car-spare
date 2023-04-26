@@ -208,7 +208,7 @@ export default {
     },
     postLoan(loan) {
       this.$emit("setloading", true);
-      takeLoan(loan)
+      takeLoan(Array(loan))
         .then((Response) => {
           success(1).then(() => {
             this.take_loan = {
