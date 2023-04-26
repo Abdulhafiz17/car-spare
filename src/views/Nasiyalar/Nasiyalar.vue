@@ -424,7 +424,7 @@ export default {
         });
         sum = sum - item.Loans.residual;
         if (i == this.loans.length - 1) {
-          this.takeLoan(data)
+          takeLoan(data)
             .then((Response) => {
               success("close-payment-modal").then(() => {
                 this.loans = [];
