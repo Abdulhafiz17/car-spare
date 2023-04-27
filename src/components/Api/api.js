@@ -444,7 +444,7 @@ export function loansCustomer(status, branch_id, page, limit) {
   );
 }
 export function takeLoan(data) {
-  return api.post(`take_loan/${data.id}?money=${data.money}&type=${data.type}`);
+  return api.post(`take_loan`, data);
 }
 
 // products
