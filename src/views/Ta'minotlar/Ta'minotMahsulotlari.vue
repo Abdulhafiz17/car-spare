@@ -688,16 +688,16 @@ export default {
             // this.market = null;
             // this.category = "";
             this.currency = null;
-            new_supply.code = 0;
-            new_supply.category_name = "";
-            new_supply.product_type_name = "";
-            new_supply.product_type_name2 = "";
-            new_supply.quantity = null;
-            new_supply.olchov_birligi = "";
-            new_supply.price = null;
-            new_supply.currency_id = null;
-            new_supply.market_id = null;
-            new_supply.party_id = $route.params.id;
+            this.new_supply.code = 0;
+            this.new_supply.category_name = "";
+            this.new_supply.product_type_name = "";
+            this.new_supply.product_type_name2 = "";
+            this.new_supply.quantity = null;
+            this.new_supply.olchov_birligi = "";
+            this.new_supply.price = null;
+            this.new_supply.currency_id = null;
+            this.new_supply.market_id = null;
+            this.new_supply.party_id = $route.params.id;
             this.getSupplies(0, 25);
           });
         })
