@@ -697,7 +697,7 @@ export default {
             this.new_supply.price = null;
             this.new_supply.currency_id = null;
             this.new_supply.market_id = null;
-            this.new_supply.party_id = $route.params.id;
+            this.new_supply.party_id = this.$route.params.id;
             this.getSupplies(0, 25);
           });
         })
