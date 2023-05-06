@@ -64,7 +64,7 @@
               <span>
                 Ushbu mijoz nasiyasi:
                 <strong>
-                  {{ _.format(loan.total_loan_price) + " so'm" }}
+                  {{ $util.currency(loan.total_loan_price) + " so'm" }}
                 </strong>
               </span>
             </div>

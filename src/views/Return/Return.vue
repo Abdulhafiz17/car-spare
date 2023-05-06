@@ -53,12 +53,12 @@
         <div class="col-md-3">
           Buyurtma summasi
           <br />
-          {{ Intl.NumberFormat().format(balance) + " so'm" }}
+          {{ $util.currency(balance) + " so'm" }}
         </div>
         <div class="col-md-3">
           Chegirma summa
           <br />
-          {{ Intl.NumberFormat().format(order?.Orders.discount) + " so'm" }}
+          {{ $util.currency(order?.Orders.discount) + " so'm" }}
         </div>
         <div class="col-md-3">
           To'lov summa
@@ -67,7 +67,7 @@
             {{
               i.Incomes.type +
               ": " +
-              Intl.NumberFormat().format(i.Incomes.money) +
+              $util.currency(i.Incomes.money) +
               " so'm" +
               (index !== order_incomes.length - 1 ? ", " : "")
             }}
@@ -95,12 +95,10 @@
                 >
                   <span>
                     Summa:
-                    {{ Intl.NumberFormat().format(item.Loans.money) + " so'm" }}
+                    {{ $util.currency(item.Loans.money) + " so'm" }}
                     <hr />
                     Qoldiq:
-                    {{
-                      Intl.NumberFormat().format(item.Loans.residual) + " so'm"
-                    }}
+                    {{ $util.currency(item.Loans.residual) + " so'm" }}
                   </span>
                 </li>
               </ul>
@@ -137,11 +135,11 @@
               </td>
               <td>
                 {{
-                  item.sum_quantity + " " + item.Trades.product.olchov_birligi
+                  $util.currency(item.sum_quantity) + " " + item.Trades.product.olchov_birligi
                 }}
               </td>
-              <td>{{ _.format(item.Trades.price) + " so'm" }}</td>
-              <td>{{ _.format(item.Trades.discount) + " so'm" }}</td>
+              <td>{{ $util.currency(item.Trades.price) + " so'm" }}</td>
+              <td>{{ $util.currency(item.Trades.discount) + " so'm" }}</td>
               <td>
                 {{
                   (returned_products.find(
@@ -156,7 +154,10 @@
                 }}
               </td>
               <td>
-                {{ _.format(item.Trades.price * item.sum_quantity) + " so'm" }}
+                {{
+                  $util.currency(item.Trades.price * item.sum_quantity) +
+                  " so'm"
+                }}
               </td>
               <td>
                 <button

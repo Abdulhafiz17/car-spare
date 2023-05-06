@@ -320,7 +320,7 @@
                       </div>
                     </form>
                   </td>
-                  <td>{{ `${item.quantity} dona` }}</td>
+                  <td>{{ `${$util.currency(item.quantity)} dona` }}</td>
                   <td
                     :class="
                       item.real_quantity - item.quantity > 0
@@ -331,7 +331,7 @@
                     "
                     v-if="item.real_quantity - item.quantity !== 0"
                   >
-                    {{ `${item.real_quantity - item.quantity} dona` }}
+                    {{ `${$util.currency(item.real_quantity - item.quantity)} dona` }}
                   </td>
                 </tr>
               </tbody>

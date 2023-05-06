@@ -64,7 +64,7 @@
               <li class="list-group-item">
                 <span>Savdo</span>
                 <span>{{
-                  _.format(
+                  $util.currency(
                     item.trade_total_price + item.trade_from_comp_total_price
                   ) + " so'm"
                 }}</span>
@@ -72,7 +72,7 @@
               <li class="list-group-item">
                 <span>Tan narx</span>
                 <span>{{
-                  _.format(
+                  $util.currency(
                     item.trade_total_tan_narx +
                       item.trade_from_comp_total_tan_narx
                   ) + " so'm"
@@ -80,12 +80,12 @@
               </li>
               <li class="list-group-item">
                 <span>Buyurtmadan chegirma</span>
-                <span>{{ _.format(item.order_discount) + " so'm" }}</span>
+                <span>{{ $util.currency(item.order_discount) + " so'm" }}</span>
               </li>
               <li class="list-group-item">
                 <span>Mahsulotdan chegirma</span>
                 <span>{{
-                  _.format(
+                  $util.currency(
                     item.trade_total_discount +
                       item.trade_from_comp_total_discount
                   ) + " so'm"
@@ -94,7 +94,9 @@
               <hr />
               <li class="list-group-item">
                 <span>Savdodan kirim</span>
-                <span>{{ _.format(item.income_trade_sum) + " so'm" }}</span>
+                <span>{{
+                  $util.currency(item.income_trade_sum) + " so'm"
+                }}</span>
               </li>
               <ul class="list-group" v-if="item.incomes_trade.length">
                 <li
@@ -103,13 +105,15 @@
                   :key="item1"
                   v-show="item1.sum_price"
                 >
-                  {{ _.format(item1.sum_price) + " so'm " + item1.type }}
+                  {{ $util.currency(item1.sum_price) + " so'm " + item1.type }}
                 </li>
               </ul>
               <hr />
               <li class="list-group-item">
                 <span>Nasiyadan kirim</span>
-                <span>{{ _.format(item.income_loan_sum) + " so'm" }}</span>
+                <span>{{
+                  $util.currency(item.income_loan_sum) + " so'm"
+                }}</span>
               </li>
               <ul class="list-group" v-if="item.incomes_loan.length">
                 <li
@@ -118,17 +122,17 @@
                   :key="item1"
                   v-show="item1.sum_price"
                 >
-                  {{ _.format(item1.sum_price) + " so'm " + item1.type }}
+                  {{ $util.currency(item1.sum_price) + " so'm " + item1.type }}
                 </li>
               </ul>
               <hr />
               <li class="list-group-item">
                 <span>Chiqim</span>
-                <span>{{ _.format(item.expense_sum) + " so'm" }}</span>
+                <span>{{ $util.currency(item.expense_sum) + " so'm" }}</span>
               </li>
               <li class="list-group-item">
                 <span>Qaytarish chiqimi</span>
-                <span>{{ _.format(item.returned_price) + " so'm" }}</span>
+                <span>{{ $util.currency(item.returned_price) + " so'm" }}</span>
               </li>
               <hr />
               <li
@@ -142,7 +146,7 @@
                 "
               >
                 <span>{{ benefit(item) >= 0 ? "Foyda" : "Zarar" }}</span>
-                <span>{{ _.format(benefit(item)) + " so'm" }}</span>
+                <span>{{ $util.currency(benefit(item)) + " so'm" }}</span>
               </li>
             </ul>
           </div>
@@ -227,7 +231,7 @@
           <li class="list-group-item">
             <span>Savdo</span>
             <span>{{
-              _.format(
+              $util.currency(
                 item.trade_total_price + item.trade_from_comp_total_price
               ) + " so'm"
             }}</span>
@@ -235,19 +239,19 @@
           <li class="list-group-item">
             <span>Tan narx</span>
             <span>{{
-              _.format(
+              $util.currency(
                 item.trade_total_tan_narx + item.trade_from_comp_total_tan_narx
               ) + " so'm"
             }}</span>
           </li>
           <li class="list-group-item">
             <span>Buyurtmadan chegirma</span>
-            <span>{{ _.format(item.order_discount) + " so'm" }}</span>
+            <span>{{ $util.currency(item.order_discount) + " so'm" }}</span>
           </li>
           <li class="list-group-item">
             <span>Mahsulotdan chegirma</span>
             <span>{{
-              _.format(
+              $util.currency(
                 item.trade_total_discount + item.trade_from_comp_total_discount
               ) + " so'm"
             }}</span>
@@ -255,7 +259,7 @@
           <hr />
           <li class="list-group-item">
             <span>Savdodan kirim</span>
-            <span>{{ _.format(item.income_trade_sum) + " so'm" }}</span>
+            <span>{{ $util.currency(item.income_trade_sum) + " so'm" }}</span>
           </li>
           <ul class="list-group" v-if="item.incomes_trade.length">
             <li
@@ -264,13 +268,13 @@
               :key="item1"
               v-show="item1.sum_price"
             >
-              {{ _.format(item1.sum_price) + " so'm " + item1.type }}
+              {{ $util.currency(item1.sum_price) + " so'm " + item1.type }}
             </li>
           </ul>
           <hr />
           <li class="list-group-item">
             <span>Nasiyadan kirim</span>
-            <span>{{ _.format(item.income_loan_sum) + " so'm" }}</span>
+            <span>{{ $util.currency(item.income_loan_sum) + " so'm" }}</span>
           </li>
           <ul class="list-group" v-if="item.incomes_loan.length">
             <li
@@ -279,17 +283,17 @@
               :key="item1"
               v-show="item1.sum_price"
             >
-              {{ _.format(item1.sum_price) + " so'm " + item1.type }}
+              {{ $util.currency(item1.sum_price) + " so'm " + item1.type }}
             </li>
           </ul>
           <hr />
           <li class="list-group-item">
             <span>Chiqim</span>
-            <span>{{ _.format(item.expense_sum) + " so'm" }}</span>
+            <span>{{ $util.currency(item.expense_sum) + " so'm" }}</span>
           </li>
           <li class="list-group-item">
             <span>Qaytarish chiqimi</span>
-            <span>{{ _.format(item.returned_price) + " so'm" }}</span>
+            <span>{{ $util.currency(item.returned_price) + " so'm" }}</span>
           </li>
           <hr />
           <li
@@ -303,7 +307,7 @@
             "
           >
             <span>{{ benefit(item) >= 0 ? "Foyda" : "Zarar" }}</span>
-            <span>{{ _.format(benefit(item)) + " so'm" }}</span>
+            <span>{{ $util.currency(benefit(item)) + " so'm" }}</span>
           </li>
         </ul>
       </div>

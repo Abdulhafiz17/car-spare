@@ -37,7 +37,7 @@
           <th colspan="3">
             Umumiy chiqim:
             <span v-for="item in sum" :key="item">
-              <strong>{{ _.format(item.sum_expense) }}</strong>
+              <strong>{{ $util.currency(item.sum_expense) }}</strong>
               {{ item.currency }}
             </span>
           </th>
@@ -53,7 +53,11 @@
         <tr v-for="item in data" :key="item">
           <td>{{ item.name }}</td>
           <td>
-            {{ _.format(item.Expenses.money) + " " + item.Currencies.currency }}
+            {{
+              $util.currency(item.Expenses.money) +
+              " " +
+              item.Currencies.currency
+            }}
           </td>
           <td>{{ item.Expenses.comment }}</td>
           <td>{{ item.Expenses.time.replace("T", " ") }}</td>

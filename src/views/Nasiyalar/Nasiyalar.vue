@@ -3,7 +3,8 @@
   <div class="row">
     <div class="col-md-4"></div>
     <div class="col-md-4 my-1 text-center">
-      Umumiy nasiya <strong>{{ _.format(sum_residual) + " so'm" }}</strong>
+      Umumiy nasiya
+      <strong>{{ $util.currency(sum_residual) + " so'm" }}</strong>
     </div>
     <div class="col-md-4"></div>
   </div>
@@ -50,7 +51,7 @@
             <div>
               <h5 class="mb-1">{{ item.Customers.name }}</h5>
             </div>
-            <span>{{ _.format(item.sum_loan_price) + " so'm" }}</span>
+            <span>{{ $util.currency(item.sum_loan_price) + " so'm" }}</span>
           </div>
           <button
             class="btn btn-sm btn-info"
@@ -88,7 +89,9 @@
     <template #header>
       <div>
         <h4>{{ customer?.Customers?.name }}</h4>
-        <strong>{{ _.format(customer?.sum_loan_price) + " so'm" }}</strong>
+        <strong>{{
+          $util.currency(customer?.sum_loan_price) + " so'm"
+        }}</strong>
       </div>
     </template>
     <template #body>
@@ -157,10 +160,10 @@
               >
                 <td><input type="checkbox" v-model="loans" :value="item" /></td>
                 <td>
-                  {{ _.format(item.Loans.money) + " so'm" }}
+                  {{ $util.currency(item.Loans.money) + " so'm" }}
                 </td>
                 <td v-if="template1 == 'active'">
-                  {{ _.format(item.Loans.residual) + " so'm" }}
+                  {{ $util.currency(item.Loans.residual) + " so'm" }}
                 </td>
                 <td>{{ item.Loans.return_date }}</td>
                 <td>
@@ -194,7 +197,7 @@
     </template>
     <template #footer>
       <div v-if="loans.length">
-        <strong>{{ _.format(sum_price) }}</strong> so'm
+        <strong>{{ $util.currency(sum_price) }}</strong> so'm
       </div>
       <button
         v-if="loans.length"
@@ -217,7 +220,7 @@
         <div class="modal-header">
           <h4>Nasiya uchun pul olish</h4>
           <span>
-            <strong>{{ _.format(sum_price) }}</strong> so'm
+            <strong>{{ $util.currency(sum_price) }}</strong> so'm
           </span>
         </div>
         <form @submit.prevent="postLoan()">

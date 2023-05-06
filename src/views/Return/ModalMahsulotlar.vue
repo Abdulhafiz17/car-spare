@@ -31,7 +31,7 @@
                   </td>
                   <td>
                     {{
-                      item.Returned_products?.quantity +
+                      $util.currency(item.Returned_products?.quantity) +
                       " " +
                       item.Returned_products?.trade?.product?.olchov_birligi
                     }}

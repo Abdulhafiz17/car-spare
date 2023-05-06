@@ -82,7 +82,7 @@
           <h5>
             {{
               "Chiqim summasi: " +
-              _.format(item.Expenses.money) +
+              $util.currency(item.Expenses.money) +
               " " +
               item.currency
             }}

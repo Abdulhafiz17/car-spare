@@ -58,7 +58,7 @@
                         "
                       >
                         {{
-                          _.format(balance.balance) +
+                          $util.currency(balance.balance) +
                           " " +
                           balance.currency.currency +
                           (index < item.balances.length - 1 ? ", " : "")

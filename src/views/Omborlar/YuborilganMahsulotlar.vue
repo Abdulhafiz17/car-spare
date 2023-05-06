@@ -76,20 +76,20 @@
               </td>
               <td>
                 {{
-                  item.Transfers.quantity +
+                  $util.currency(item.Transfers.quantity) +
                   (item.Warehouse_products.boyi ? " dona" : " metr")
                 }}
               </td>
               <td>
                 {{
-                  _.format(item.Transfers.transfer_price) +
+                  $util.currency(item.Transfers.transfer_price) +
                   " " +
                   item.Currencies.currency
                 }}
               </td>
               <td>
                 {{
-                  _.format(
+                  $util.currency(
                     item.Transfers.transfer_price * item.Transfers.quantity
                   ) +
                   " " +
@@ -197,20 +197,20 @@
               </td>
               <td>
                 {{
-                  item.Transfers.quantity +
+                  $util.currency(item.Transfers.quantity) +
                   (item.Warehouse_products.boyi ? " dona" : " metr")
                 }}
               </td>
               <td>
                 {{
-                  _.format(item.Transfers.transfer_price) +
+                  $util.currency(item.Transfers.transfer_price) +
                   " " +
                   item.Currencies.currency
                 }}
               </td>
               <td>
                 {{
-                  _.format(
+                  $util.currency(
                     item.Transfers.transfer_price * item.Transfers.quantity
                   ) +
                   " " +

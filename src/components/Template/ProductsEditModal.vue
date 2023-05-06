@@ -187,7 +187,7 @@
                     v-model="item.name"
                   />
                   <div class="input-group-text">
-                    {{ item.quantity + " " + item.olchov_birligi }}
+                    {{ $util.currency(item.quantity) + " " + item.olchov_birligi }}
                   </div>
                   <div class="input-group-append">
                     <button class="btn btn-outline-warning">
@@ -235,7 +235,7 @@
                   v-for="item in product_units"
                   :key="item"
                 >
-                  {{ "1 " + item.olchov + " = " + item.quantity + " dona" }}
+                  {{ "1 " + item.olchov + " = " + $util.currency(item.quantity) + " dona" }}
                   <button
                     class="btn btn-sm btn-outline-danger"
                     @click="deleteUnit(item.id)"

@@ -33,7 +33,7 @@
                     <span>{{ "Hajm:" }}</span>
                     <span>
                       {{
-                        product?.sum_quantity +
+                        $util.currency(product?.sum_quantity) +
                         (product?.Warehouse_products.boyi ? " dona" : " metr")
                       }}</span
                     >
@@ -42,7 +42,7 @@
                     <span>{{ "Narx:" }}</span>
                     <span>
                       {{
-                        _.format(product?.Transfers.transfer_price) +
+                        $util.currency(product?.Transfers.transfer_price) +
                         " " +
                         product?.Currencies.currency
                       }}</span

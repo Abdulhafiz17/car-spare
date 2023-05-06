@@ -81,7 +81,7 @@
                           : ''
                       "
                     >
-                      {{ _.format(item.balance) + " so'm" }}
+                      {{ $util.currency(item.balance) + " so'm" }}
                     </span>
                   </li>
                 </ul>

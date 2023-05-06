@@ -35,7 +35,7 @@
       <tbody>
         <tr v-for="item in expenses" :key="item">
           <td>
-            {{ Intl.NumberFormat().format(item.Expenses.money) }}
+            {{ $util.currency(item.Expenses.money) }}
             {{ item.currency }}
           </td>
           <td>{{ item.Expenses.comment }}</td>

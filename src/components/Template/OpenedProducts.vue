@@ -32,17 +32,23 @@
           <td>{{ item.category }}</td>
           <td>{{ item.Products.product_type?.name }}</td>
           <td>{{ item.Products.product_type?.name2 }}</td>
-          <td>{{ item.sum_quantity + " " + item.Products.olchov_birligi }}</td>
           <td>
             {{
-              _.format(item.Products.price) +
+              $util.currency(item.sum_quantity) +
+              " " +
+              item.Products.olchov_birligi
+            }}
+          </td>
+          <td>
+            {{
+              $util.currency(item.Products.price) +
               " " +
               item.Products.currency.currency
             }}
           </td>
           <td>
             {{
-              _.format(item.Products.tan_narx) +
+              $util.currency(item.Products.tan_narx) +
               " " +
               item.tan_narx_currency.currency
             }}
@@ -50,7 +56,7 @@
           <td>
             {{
               status == "price_true"
-                ? _.format(item.Products.last_price) +
+                ? $util.currency(item.Products.last_price) +
                   " " +
                   item.last_currency.currency
                 : "narx belgilanmagan"
@@ -59,7 +65,7 @@
           <td>
             {{
               status == "price_true"
-                ? _.format(item.Products.sotuv_price) +
+                ? $util.currency(item.Products.sotuv_price) +
                   " " +
                   item.sotuv_currency.currency
                 : "narx belgilanmagan"
@@ -68,7 +74,7 @@
           <td>
             {{
               status == "price_true"
-                ? _.format(item.Products.vitrina_price) +
+                ? $util.currency(item.Products.vitrina_price) +
                   " " +
                   item.vitrina_currency.currency
                 : "narx belgilanmagan"

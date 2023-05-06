@@ -117,7 +117,9 @@
           </td>
           <td>
             {{
-              _.format(item.Warehouse_products.tan_narx) + " " + item.currency
+              $util.currency(item.Warehouse_products.tan_narx) +
+              " " +
+              item.currency
             }}
           </td>
         </tr>

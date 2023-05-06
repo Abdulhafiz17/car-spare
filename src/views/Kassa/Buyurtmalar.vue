@@ -12,7 +12,7 @@
       <span>
         {{
           "Buyurtma balansi: " +
-          (order && balance ? _.format(balance) : 0) +
+          (order && balance ? $util.currency(balance) : 0) +
           " so'm"
         }}
       </span>

@@ -48,7 +48,7 @@
           </thead>
           <tbody>
             <tr v-for="item in expenses" :key="item">
-              <td>{{ _.format(item.Expenses.money) + " so'm" }}</td>
+              <td>{{ $util.currency(item.Expenses.money) + " so'm" }}</td>
               <td>{{ item.Expenses.comment }}</td>
               <td>{{ item.user }}</td>
               <td>{{ item.Expenses.time.replace("T", " ") }}</td>

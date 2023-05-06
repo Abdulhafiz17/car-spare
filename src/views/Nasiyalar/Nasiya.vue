@@ -15,7 +15,7 @@
       <h5 v-if="loan?.Loans.residual">
         <span>Ushbu nasiya qoldig'i</span>
         <br />
-        {{ _.format(loan?.Loans.residual) + " so'm" }}
+        {{ $util.currency(loan?.Loans.residual) + " so'm" }}
       </h5>
     </div>
     <div class="col-md-4">
@@ -43,7 +43,9 @@
       <tbody>
         <tr v-for="item in incomes" :key="item">
           <td>
-            {{ _.format(item.Incomes.money) + " so'm " + item.Incomes.type }}
+            {{
+              $util.currency(item.Incomes.money) + " so'm " + item.Incomes.type
+            }}
           </td>
           <td>{{ item.name }}</td>
           <td>{{ item.Incomes.time.replace("T", " ").substring(0, 16) }}</td>

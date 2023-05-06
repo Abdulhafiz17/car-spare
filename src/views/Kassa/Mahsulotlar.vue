@@ -28,7 +28,7 @@
                     `${item.category} - ${item.Products.product_type?.name} ${item.Products.product_type?.name2}`
                   }}
                 </span>
-                <span>{{ `${item.sum_quantity} dona` }}</span>
+                <span>{{ `${$util.currency(item.sum_quantity)} dona` }}</span>
               </li>
             </div>
           </div>
@@ -146,7 +146,7 @@
           </td>
           <td>
             {{
-              _.format(
+              $util.currency(
                 (item.Trades.price - item.Trades.discount) * item.sum_quantity
               ) + " so'm"
             }}
@@ -183,7 +183,7 @@
         }}
         <br />
         <div class="text-start">
-          {{ _.format(product?.vitrina) + " so'm" }}
+          {{ $util.currency(product?.vitrina) + " so'm" }}
         </div>
       </h4>
     </template>
@@ -263,7 +263,7 @@
                   "
                 >
                   <span>{{ item.name }}</span>
-                  <span>{{ item.quantity + " " + item.olchov_birligi }}</span>
+                  <span>{{ $util.currency(item.quantity) + " " + item.olchov_birligi }}</span>
                 </li>
               </ul>
               <div class="row gap-1" v-else-if="!trade.status">
@@ -292,7 +292,7 @@
                     >
                       <span>{{ item2.name }}</span>
                       <span>{{
-                        item2.quantity + " " + item2.olchov_birligi
+                        $util.currency(item2.quantity) + " " + item2.olchov_birligi
                       }}</span>
                     </li>
                   </ul>
@@ -416,13 +416,15 @@
           <div class="col-12 text-left" v-if="show_price">
             <div class="row">
               <div class="col-12">
-                Vitrina: <strong>{{ _.format(product.vitrina) }}</strong> so'm
+                Vitrina:
+                <strong>{{ $util.currency(product.vitrina) }}</strong> so'm
               </div>
               <div class="col-12">
-                Sotuv: <strong>{{ _.format(product.sotuv) }}</strong> so'm
+                Sotuv: <strong>{{ $util.currency(product.sotuv) }}</strong> so'm
               </div>
               <div class="col-12">
-                Minimal: <strong>{{ _.format(product.last) }}</strong> so'm
+                Minimal:
+                <strong>{{ $util.currency(product.last) }}</strong> so'm
               </div>
             </div>
           </div>
@@ -477,7 +479,9 @@
             @click="postTrade(barcode, item.id)"
           >
             <span>{{ item.name }}</span>
-            <span>{{ item.quantity + " " + item.olchov_birligi }}</span>
+            <span>{{
+              $util.currency(item.quantity) + " " + item.olchov_birligi
+            }}</span>
           </li>
         </ul>
       </div>

@@ -13,11 +13,7 @@
                   :key="item"
                   v-show="item.total_price"
                 >
-                  {{
-                    _.format(formatPrice(item.total_price)) +
-                    " " +
-                    item.currency
-                  }}
+                  {{ $util.currency(item.total_price) + " " + item.currency }}
                 </span>
               </div>
               <div class="col-md-6">
@@ -29,7 +25,7 @@
                   v-show="item.total_vitrina_price"
                 >
                   {{
-                    _.format(formatPrice(item.total_vitrina_price)) +
+                    $util.currency(item.total_vitrina_price) +
                     " " +
                     item.currency
                   }}
@@ -70,21 +66,21 @@
           <td>{{ item.Products.product_type?.name2 }}</td>
           <td>
             {{
-              formatPrice(item.sum_quantity) +
+              $util.currency(item.sum_quantity) +
               " " +
               item.Products.olchov_birligi
             }}
           </td>
           <td>
             {{
-              _.format(formatPrice(item.Products.price)) +
+              $util.currency(item.Products.price) +
               " " +
               item.Products.currency.currency
             }}
           </td>
           <td>
             {{
-              _.format(formatPrice(item.Products.tan_narx)) +
+              $util.currency(item.Products.tan_narx) +
               " " +
               item.tan_narx_currency.currency
             }}
@@ -92,7 +88,7 @@
           <td>
             {{
               status == "price_true"
-                ? _.format(formatPrice(item.Products.last_price)) +
+                ? $util.currency(item.Products.last_price) +
                   " " +
                   item.last_currency.currency
                 : "narx belgilanmagan"
@@ -101,7 +97,7 @@
           <td>
             {{
               status == "price_true"
-                ? _.format(formatPrice(item.Products.sotuv_price)) +
+                ? $util.currency(item.Products.sotuv_price) +
                   " " +
                   item.sotuv_currency.currency
                 : "narx belgilanmagan"
@@ -110,7 +106,7 @@
           <td>
             {{
               status == "price_true"
-                ? _.format(formatPrice(item.Products.vitrina_price)) +
+                ? $util.currency(item.Products.vitrina_price) +
                   " " +
                   item.vitrina_currency.currency
                 : "narx belgilanmagan"
@@ -210,9 +206,6 @@ export default {
   methods: {
     setloading(loading) {
       this.$emit("setloading", loading);
-    },
-    formatPrice(number) {
-      return Number(number.toFixed(2));
     },
     getProducts(page, limit) {
       this.$emit("setloading", true);

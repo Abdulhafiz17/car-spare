@@ -29,18 +29,18 @@
           <td>{{ item.product_name }}</td>
           <td>{{ item.product_name2 }}</td>
           <td>
-            {{ item.Supplies.quantity + " " + item.Supplies.olchov_birligi }}
+            {{
+              $util.currency(item.Supplies.quantity) +
+              " " +
+              item.Supplies.olchov_birligi
+            }}
           </td>
           <td>
-            {{ Intl.NumberFormat().format(item.Supplies.price) }}
+            {{ $util.currency(item.Supplies.price) }}
             {{ item.currency }}
           </td>
           <td>
-            {{
-              Intl.NumberFormat().format(
-                item.Supplies.price * item.Supplies.quantity
-              )
-            }}
+            {{ $util.currency(item.Supplies.price * item.Supplies.quantity) }}
             {{ item.currency }}
           </td>
           <td>

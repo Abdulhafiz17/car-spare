@@ -46,21 +46,27 @@
           </td>
           <td>
             {{
-              item.Warehouse_products.quantity +
+              $util.currency(item.Warehouse_products.quantity) +
               (item.Warehouse_products.boyi ? " dona" : " metr")
             }}
           </td>
           <td>
-            {{ _.format(item.Warehouse_products.price) + " " + item.currency }}
-          </td>
-          <td>
             {{
-              _.format(item.Warehouse_products.tan_narx) + " " + item.currency
+              $util.currency(item.Warehouse_products.price) +
+              " " +
+              item.currency
             }}
           </td>
           <td>
             {{
-              _.format(
+              $util.currency(item.Warehouse_products.tan_narx) +
+              " " +
+              item.currency
+            }}
+          </td>
+          <td>
+            {{
+              $util.currency(
                 item.Warehouse_products.tan_narx *
                   item.Warehouse_products.quantity
               ) +
@@ -282,10 +288,10 @@
                   <td>
                     {{ item.eni + (item.boyi ? " x " + item.boyi : " metr") }}
                   </td>
-                  <td>{{ item.quantity + (item.boyi ? " dona" : " metr") }}</td>
+                  <td>{{ $util.currency(item.quantity) + (item.boyi ? " dona" : " metr") }}</td>
                   <td>
                     {{
-                      _.format(item.price) +
+                      $util.currency(item.price) +
                       " " +
                       currencies.find(
                         (currency) => currency.id == item.currency_id
@@ -294,7 +300,7 @@
                   </td>
                   <td>
                     {{
-                      _.format(item.tan_narx) +
+                      $util.currency(item.tan_narx) +
                       " " +
                       currencies.find(
                         (currency) => currency.id == item.tan_narx_currency_id

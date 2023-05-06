@@ -22,7 +22,7 @@
       <div class="modal-content">
         <form @submit.prevent="confirmOrder(confirm_order)">
           <div class="modal-body">
-            <h3>{{ _.format(balance) + " so'm" }}</h3>
+            <h3>{{ $util.currency(balance) + " so'm" }}</h3>
             <h5>Mijoz turini tanlang</h5>
             <div class="row">
               <div class="col-4" v-if="order_type == 'payment'">
@@ -334,12 +334,14 @@
               item.Products.eni +
               (item.Products.boyi ? " x " + item.Products.boyi : " metr") +
               " - " +
-              item.sum_quantity +
+              $util.currency(item.sum_quantity) +
               (item.Products.boyi ? " dona" : " metr")
             }}
           </span>
           <span>
-            {{ _.format(item.Trades.price - item.Trades.discount) + " so'm" }}
+            {{
+              $util.currency(item.Trades.price - item.Trades.discount) + " so'm"
+            }}
           </span>
         </li>
       </ul>
@@ -347,14 +349,16 @@
       <ul class="list-group">
         <li class="list-group-item">
           <span>Buyurtma summasi</span>
-          <span>{{ _.format(order_print.Balance.total_price) + " so'm" }}</span>
+          <span>{{
+            $util.currency(order_print.Balance.total_price) + " so'm"
+          }}</span>
         </li>
       </ul>
       <hr />
       <ul class="list-group">
         <li class="list-group-item">
           <span>Buyurtma chegirmasi</span>
-          <span>{{ _.format(order?.Orders.discount) + " so'm" }}</span>
+          <span>{{ $util.currency(order?.Orders.discount) + " so'm" }}</span>
         </li>
       </ul>
       <hr />
@@ -362,7 +366,7 @@
         <li class="list-group-item">
           <span>Nasiya summasi</span>
           <span>
-            {{ _.format(order_print.Loan.Loans.money) + " so'm" }}
+            {{ $util.currency(order_print.Loan.Loans.money) + " so'm" }}
           </span>
         </li>
         <li class="list-group-item">
@@ -383,7 +387,7 @@
               :key="item"
             >
               {{ item.Incomes.comment + ": " }}
-              {{ Intl.NumberFormat().format(item.Incomes.money) + " so'm" }}
+              {{ $util.currency(item.Incomes.money) + " so'm" }}
               {{ index < order_print.Incomes.length - 1 ? ", " : "" }}
             </span>
           </span>
