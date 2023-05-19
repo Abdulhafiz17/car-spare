@@ -6,7 +6,7 @@ import collapse from "./components/Collapse/collapse.vue";
 import modal from "./components/Modal/Modal.vue";
 const util = {
   currency(number = 0) {
-    return Intl.NumberFormat().format(number.toFixed(2));
+    return Intl.NumberFormat().format(Number(number).toFixed(2));
   },
 };
 
