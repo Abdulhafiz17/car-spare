@@ -263,7 +263,9 @@
                   "
                 >
                   <span>{{ item.name }}</span>
-                  <span>{{ $util.currency(item.quantity) + " " + item.olchov_birligi }}</span>
+                  <span>{{
+                    $util.currency(item.quantity) + " " + item.olchov_birligi
+                  }}</span>
                 </li>
               </ul>
               <div class="row gap-1" v-else-if="!trade.status">
@@ -292,7 +294,9 @@
                     >
                       <span>{{ item2.name }}</span>
                       <span>{{
-                        $util.currency(item2.quantity) + " " + item2.olchov_birligi
+                        $util.currency(item2.quantity) +
+                        " " +
+                        item2.olchov_birligi
                       }}</span>
                     </li>
                   </ul>
@@ -375,7 +379,7 @@
               <input
                 type="number"
                 class="form-control"
-                min="1"
+                min="0.01"
                 step="any"
                 placeholder="miqdor"
                 required
