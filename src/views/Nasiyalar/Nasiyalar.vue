@@ -147,6 +147,7 @@
                 </th>
                 <th>Nasiya summasi</th>
                 <th v-if="template1 == 'active'">Qoldiq summa</th>
+                <th>Olingan sana</th>
                 <th>Qaytarish sanasi</th>
                 <th></th>
               </tr>
@@ -165,6 +166,9 @@
                 <td v-if="template1 == 'active'">
                   {{ $util.currency(item.Loans.residual) + " so'm" }}
                 </td>
+                <td>
+                  {{ item.Loans.order.time.replace("T", " ").substring(0, 10) }}
+                </td>
                 <td>{{ item.Loans.return_date }}</td>
                 <td>
                   <router-link
@@ -179,7 +183,7 @@
             </tbody>
             <tfoot>
               <tr>
-                <td colspan="5">
+                <td colspan="6">
                   <Pagination
                     :page="page"
                     :pages="pages"
