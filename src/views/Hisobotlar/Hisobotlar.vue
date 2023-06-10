@@ -157,30 +157,127 @@
 
   <button
     data-toggle="modal"
-    data-target="#orders"
-    toggle-orders-modal
+    data-target="#day"
+    toggle-day-modal
     v-show="false"
   ></button>
-  <modal id="orders">
+  <modal id="day" size="xl">
     <template #header>
       <h4>{{ date }}</h4>
     </template>
     <template #body>
-      <ul class="list-group gap-1">
-        <li
-          class="list-group-item"
-          v-for="item in orders?.data"
-          :key="item"
-          data-toggle="modal"
-          data-target="#order"
-          @click="order_id = item.Orders.id"
-        >
-          <span>Buyurtma raqami: {{ item.Orders.ordinal_number }}</span>
-          <span>
-            Mijoz: {{ item.Customers ? item.Customers.name : "Umumiy" }}
-          </span>
-        </li>
-      </ul>
+      <tabs
+        :tab_buttons="[`Buyurtmalar`, `Chiqimlar`]"
+        :tab_slots="['orders', 'expenses']"
+      >
+        <template #orders>
+          <ul class="list-group gap-1">
+            <li
+              class="list-group-item"
+              v-for="item in orders?.data"
+              :key="item"
+              data-toggle="modal"
+              data-target="#order"
+              @click="order_id = item.Orders.id"
+            >
+              <span>Buyurtma raqami: {{ item.Orders.ordinal_number }}</span>
+              <span>
+                Mijoz: {{ item.Customers ? item.Customers.name : "Umumiy" }}
+              </span>
+            </li>
+          </ul>
+        </template>
+        <template #expenses>
+          <div class="row">
+            <div
+              v-if="fixed_expenses.data.length"
+              :class="variable_expenses.data.length ? 'col-6' : 'col-12'"
+            >
+              Doimiy chiqimlar
+              <div class="responsive-y" style="max-height: 50vh">
+                <table class="table table-sm table-hover">
+                  <thead>
+                    <tr>
+                      <th>Chiqim</th>
+                      <th>Summa</th>
+                      <th>Izoh</th>
+                      <th>Sana</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="item in fixed_expenses.data" :key="item">
+                      <td>{{ item.name }}</td>
+                      <td>
+                        {{
+                          $util.currency(item.Expenses.money) +
+                          " " +
+                          item.Currencies.currency
+                        }}
+                      </td>
+                      <td>{{ item.Expenses.comment }}</td>
+                      <td>{{ item.Expenses.time.replace("T", " ") }}</td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="4">
+                        <Pagination
+                          :page="fixed_expenses.current_page"
+                          :pages="fixed_expenses.pages"
+                          :limit="fixed_expenses.limit"
+                          @get="getFixedExpenses"
+                        />
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+            <div
+              v-if="variable_expenses.data.length"
+              :class="fixed_expenses.data.length ? 'col-6' : 'col-12'"
+            >
+              Bir marttalik chiqimlar
+              <div class="responsive-y" style="max-height: 50vh">
+                <table class="table table-sm table-hover">
+                  <thead>
+                    <tr>
+                      <th>Summa</th>
+                      <th>Izoh</th>
+                      <th>Sana</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="item in variable_expenses.data" :key="item">
+                      <td>
+                        {{
+                          $util.currency(item.Expenses.money) +
+                          " " +
+                          item.Currencies.currency
+                        }}
+                      </td>
+                      <td>{{ item.Expenses.comment }}</td>
+                      <td>{{ item.Expenses.time.replace("T", " ") }}</td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="3">
+                        <Pagination
+                          :page="variable_expenses.current_page"
+                          :pages="variable_expenses.pages"
+                          :limit="variable_expenses.limit"
+                          @get="getVariableExpenses"
+                        />
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </template>
+      </tabs>
     </template>
     <template #footer>
       <button class="btn btn-outline-danger" data-dismiss="modal">
@@ -348,6 +445,18 @@ export default {
       date: "",
       orders: null,
       order_id: null,
+      fixed_expenses: {
+        current_page: 0,
+        pages: 1,
+        limit: 25,
+        data: [],
+      },
+      variable_expenses: {
+        current_page: 0,
+        pages: 1,
+        limit: 25,
+        data: [],
+      },
     };
   },
   created() {
@@ -411,7 +520,48 @@ export default {
         )
         .then((res) => {
           this.orders = res.data;
-          document.querySelector("[toggle-orders-modal]").click();
+          document.querySelector("[toggle-day-modal]").click();
+          this.getFixedExpenses(0, 25);
+          this.getVariableExpenses(0, 25);
+          this.$emit("setloading", false);
+        })
+        .catch((err) => {
+          this.$emit("setloading", false);
+          api.catchError(err);
+        });
+    },
+    getFixedExpenses(page, limit) {
+      this.$emit("setloading", true);
+      api
+        .fixedExpenses(
+          this.$route.params.id,
+          this.date,
+          this.date,
+          0,
+          page,
+          limit
+        )
+        .then((res) => {
+          this.fixed_expenses = res.data;
+          this.$emit("setloading", false);
+        })
+        .catch((err) => {
+          this.$emit("setloading", false);
+          api.catchError(err);
+        });
+    },
+    getVariableExpenses(page, limit) {
+      this.$emit("setloading", true);
+      api
+        .variableExpenses(
+          this.$route.params.id,
+          this.date,
+          this.date,
+          page,
+          limit
+        )
+        .then((res) => {
+          this.variable_expenses = res.data;
           this.$emit("setloading", false);
         })
         .catch((err) => {
