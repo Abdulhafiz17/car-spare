@@ -81,12 +81,14 @@ button::before {
   height: 100%;
   border-radius: 4px;
   background: rgb(13, 110, 253);
+  opacity: 0;
   transition: 0.3s all;
 }
 
 button.active::before {
   left: 0;
   right: 0;
+  opacity: 1;
 }
 
 button::after {
