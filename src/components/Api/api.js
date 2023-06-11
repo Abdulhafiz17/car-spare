@@ -414,9 +414,18 @@ export function tradeBalance(order_id) {
 export function returnProduct(data) {
   return api.put(`return_product`, data);
 }
-export function returnedProducts(order_id, branch_id, page, limit) {
+export function returnedProducts(
+  order_id,
+  branch_id,
+  from_time,
+  to_time,
+  page,
+  limit
+) {
+  const time_query =
+    from_time && to_time ? `from_time=${from_time}&to_time=${to_time}` : ``;
   return api.get(
-    `get_returned_products?order_id=${order_id}&branch_id=${branch_id}&page=${page}&limit=${limit}`
+    `get_returned_products?order_id=${order_id}&branch_id=${branch_id}&${time_query}&page=${page}&limit=${limit}`
   );
 }
 

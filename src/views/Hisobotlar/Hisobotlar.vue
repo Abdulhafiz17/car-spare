@@ -167,8 +167,8 @@
     </template>
     <template #body>
       <tabs
-        :tab_buttons="[`Buyurtmalar`, `Chiqimlar`]"
-        :tab_slots="['orders', 'expenses']"
+        :tab_buttons="[`Buyurtmalar`, `Chiqimlar`, `Qaytarilgan mahsulotlar`]"
+        :tab_slots="['orders', 'expenses', 'returned_products']"
       >
         <template #orders>
           <ul class="list-group gap-1">
@@ -275,6 +275,66 @@
                 </table>
               </div>
             </div>
+          </div>
+        </template>
+        <template #returned_products>
+          <div
+            class="responsive-y"
+            style="max-height: 50vh"
+            v-if="returned_products.data.length"
+          >
+            <table class="table table-sm table-hover">
+              <thead>
+                <tr>
+                  <th>Mahsulot</th>
+                  <th>Hajm</th>
+                  <th>Hodim</th>
+                  <th>Sana</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in returned_products.data" :key="item">
+                  <td>
+                    {{
+                      item.Returned_products?.trade?.product?.category?.name +
+                      " - " +
+                      item.Returned_products?.trade?.product?.product_type
+                        ?.name +
+                      " - " +
+                      item.Returned_products?.trade?.product?.product_type
+                        ?.name2
+                    }}
+                  </td>
+                  <td>
+                    {{
+                      $util.currency(item.Returned_products?.quantity) +
+                      " " +
+                      item.Returned_products?.trade?.product?.olchov_birligi
+                    }}
+                  </td>
+                  <td>{{ item.user }}</td>
+                  <td>
+                    {{
+                      item.Returned_products.time
+                        .replace("T", " ")
+                        .substring(0, 16)
+                    }}
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="4">
+                    <Pagination
+                      :page="returned_products.current_page"
+                      :pages="returned_products.pages"
+                      :limit="returned_products.limit"
+                      @get="getReturnedProducts"
+                    />
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
           </div>
         </template>
       </tabs>
@@ -457,6 +517,12 @@ export default {
         limit: 25,
         data: [],
       },
+      returned_products: {
+        current_page: 0,
+        pages: 1,
+        limit: 25,
+        data: [],
+      },
     };
   },
   created() {
@@ -523,6 +589,7 @@ export default {
           document.querySelector("[toggle-day-modal]").click();
           this.getFixedExpenses(0, 25);
           this.getVariableExpenses(0, 25);
+          this.getReturnedProducts(0, 25);
           this.$emit("setloading", false);
         })
         .catch((err) => {
@@ -562,6 +629,26 @@ export default {
         )
         .then((res) => {
           this.variable_expenses = res.data;
+          this.$emit("setloading", false);
+        })
+        .catch((err) => {
+          this.$emit("setloading", false);
+          api.catchError(err);
+        });
+    },
+    getReturnedProducts(page, limit) {
+      this.$emit("setloading", true);
+      api
+        .returnedProducts(
+          0,
+          this.$route.params.id,
+          this.date,
+          this.date,
+          page,
+          limit
+        )
+        .then((res) => {
+          this.returned_products = res.data;
           this.$emit("setloading", false);
         })
         .catch((err) => {
