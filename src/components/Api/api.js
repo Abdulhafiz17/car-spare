@@ -354,7 +354,7 @@ export function customerLoan(customer_id) {
   return api.get(`get_customer_loan/${customer_id}`);
 }
 export function updateCustomer(data) {
-  return api.put(`update_customer/${data.id}`, data);
+  return api.put(`update_customer`, data);
 }
 
 // orders
