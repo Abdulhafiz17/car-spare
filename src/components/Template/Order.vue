@@ -202,7 +202,7 @@ export default {
     },
     getReturnedProducts(order_id) {
       let branch_id = this.branch_id ? this.branch_id : 0;
-      returnedProducts(order_id, branch_id, 0, 25)
+      returnedProducts(order_id, branch_id, "", "", 0, 25)
         .then((Response) => {
           this.returned_products = Response.data.data;
           this.$emit("setloading", false);
