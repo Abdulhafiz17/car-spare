@@ -135,7 +135,9 @@
               </td>
               <td>
                 {{
-                  $util.currency(item.sum_quantity) + " " + item.Trades.product.olchov_birligi
+                  $util.currency(item.sum_quantity) +
+                  " " +
+                  item.Trades.product.olchov_birligi
                 }}
               </td>
               <td>{{ $util.currency(item.Trades.price) + " so'm" }}</td>
@@ -319,7 +321,7 @@ export default {
         });
     },
     getReturnedProducts(order_id) {
-      returnedProducts(order_id, this.branch_id, 0, 25)
+      returnedProducts(order_id, this.branch_id, "", "", 0, 25)
         .then((Response) => {
           this.returned_products = Response.data.data;
           this.$emit("setloading", false);

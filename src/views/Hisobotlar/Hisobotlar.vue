@@ -658,8 +658,12 @@ export default {
     },
     routerToReturn(order_id) {
       localStorage.setItem("order_id_for_return", order_id);
-      document.querySelector("[toggle-orders-modal]").click();
-      document.querySelector("[close-order-modal]").click();
+      // document.querySelector("[toggle-orders-modal]").click();
+      // document.querySelector("[close-order-modal]").click();
+      const buttons = document.querySelectorAll(`[data-dismiss=modal]`);
+      buttons.forEach((item) => {
+        item.click();
+      });
       this.$router.push("/return");
     },
   },
