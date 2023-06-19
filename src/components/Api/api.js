@@ -1,7 +1,7 @@
 import router from "@/router";
 import axios from "axios";
 import swal from "sweetalert";
-
+// https://igrushka-api.alkaten.uz/
 const api = axios.create({
   baseURL: "https://tradeinautopartsproject-api.crud.uz/",
   headers: {
