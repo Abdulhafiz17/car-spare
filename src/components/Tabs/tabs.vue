@@ -76,8 +76,8 @@ button::before {
   content: "";
   position: absolute;
   top: 0;
-  left: 50%;
-  right: 50%;
+  left: 0;
+  right: 0;
   height: 100%;
   border-radius: 4px;
   background: rgb(13, 110, 253);
