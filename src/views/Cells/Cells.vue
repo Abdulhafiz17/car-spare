@@ -102,6 +102,7 @@ export default {
       </button>
     </div>
   </div>
+  <hr />
 
   <div class="responsive-y" style="max-height: 80vh">
     <div class="row">
