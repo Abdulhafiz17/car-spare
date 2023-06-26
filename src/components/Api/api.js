@@ -515,6 +515,19 @@ export function deleteProductUnit(id) {
   return api.delete(`delete_olchov_birligi/${id}`);
 }
 
+// cells
+
+export function cells(search, page, limit) {
+  const search_query = search ? `search=${search}` : ``;
+  return api.get(`get_cells?${search_query}&page=${page}&limit=${limit}`);
+}
+export function createCell(data) {
+  return api.post(`create_cell`, data);
+}
+export function updateCell(data) {
+  return api.put(`update_cell`, data);
+}
+
 // product locations
 
 export function productLocations(page, limit) {

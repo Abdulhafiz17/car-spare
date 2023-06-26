@@ -115,6 +115,11 @@ export default {
           title: `Mahsulotlar`,
         },
         {
+          path: `/cells`,
+          role: `branch_admin`,
+          title: `Mahsulot o'rni`,
+        },
+        {
           path: `/revision/${localStorage["branch_id"]}`,
           role: `branch_admin`,
           title: `Mahsulotlar qoldig'i`,

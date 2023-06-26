@@ -193,6 +193,16 @@ let routes = [
     component: () => import("../views/Mahsulotlar/Mahsulotlar.vue"),
   },
   {
+    path: "/cells",
+    name: "cells",
+    meta: {
+      auth: true,
+      title: "Mahsulot o'rni",
+      role: ["branch_admin"],
+    },
+    component: () => import("../views/Cells/Cells.vue"),
+  },
+  {
     path: "/revision/:id",
     name: "revision",
     meta: {
