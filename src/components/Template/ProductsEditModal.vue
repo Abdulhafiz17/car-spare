@@ -20,12 +20,8 @@
     </template>
     <template #body>
       <tabs
-        :tab_buttons="[
-          `Mahsulot narxi`,
-          `Mahsulot qismlari`,
-          `O'lchov birliklari`,
-        ]"
-        :tab_slots="[`price`, `part`, `unit`]"
+        :tab_buttons="[`Narxi`, `Qismlari`, `O'lchov birliklari`, `O'rni`]"
+        :tab_slots="[`price`, `part`, `unit`, `cell`]"
       >
         <template #price>
           <form id="edit-product" @submit.prevent="putProduct(product)">
@@ -187,7 +183,9 @@
                     v-model="item.name"
                   />
                   <div class="input-group-text">
-                    {{ $util.currency(item.quantity) + " " + item.olchov_birligi }}
+                    {{
+                      $util.currency(item.quantity) + " " + item.olchov_birligi
+                    }}
                   </div>
                   <div class="input-group-append">
                     <button class="btn btn-outline-warning">
@@ -235,7 +233,13 @@
                   v-for="item in product_units"
                   :key="item"
                 >
-                  {{ "1 " + item.olchov + " = " + $util.currency(item.quantity) + " dona" }}
+                  {{
+                    "1 " +
+                    item.olchov +
+                    " = " +
+                    $util.currency(item.quantity) +
+                    " dona"
+                  }}
                   <button
                     class="btn btn-sm btn-outline-danger"
                     @click="deleteUnit(item.id)"
@@ -246,6 +250,43 @@
               </ul>
             </div>
           </div>
+        </template>
+        <template #cell>
+          <form id="edit-product" @submit.prevent="putProduct()">
+            <div class="dropdown">
+              <button
+                type="button"
+                id="cellDropdown"
+                class="btn btn-sm btn-block btn-outline-primary dropdown-toggle"
+                data-toggle="dropdown"
+                @click="getCells()"
+              >
+                {{ cell?.name || "Mahsulot o'rni" }}
+              </button>
+              <div
+                class="dropdown-menu w-100 mt-1 p-1"
+                aria-labelledby="cellDropdown"
+              >
+                <ul
+                  class="list-group p-1 responsive"
+                  style="max-height: 25vh"
+                  @scroll="scrollCells($event)"
+                >
+                  <li
+                    class="list-group-item p-2"
+                    v-for="item in cells.data"
+                    :key="item"
+                    @click="
+                      cell = item;
+                      product.Products.cell_id = item.id;
+                    "
+                  >
+                    {{ item.name }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </form>
         </template>
       </tabs>
     </template>
@@ -275,6 +316,7 @@ export default {
       product: {
         Products: {
           code: 0,
+          cell_id: 0,
           currency_id: 0,
           last_currency_id: 0,
           updated_code: 0,
@@ -331,10 +373,19 @@ export default {
         quantity: null,
       },
       product_units: [],
+      search_cell: "",
+      cells: {
+        current_page: 0,
+        pages: 1,
+        limit: 25,
+        data: [],
+      },
+      cell: null,
     };
   },
   created() {
     this.getCurrencies();
+    this.getCells();
   },
   methods: {
     start(code) {
@@ -365,6 +416,33 @@ export default {
           api.catchError(err);
         });
     },
+    getCells() {
+      this.$emit("setloading", true);
+      api
+        .cells(this.search_cell, 0, 25)
+        .then((res) => {
+          this.cells = res.data;
+          this.$emit("setloading", false);
+        })
+        .catch((err) => {
+          this.$emit("setloading", false);
+          api.catchError(err);
+        });
+    },
+    scrollCells(event) {
+      const element = event.target;
+      if (element.scrollTop + element.clientHeight >= element.scrollHeight) {
+        if (this.cells.current_page < this.cells.pages) {
+          api
+            .cells(this.search_cell, this.cells.current_page + 1, 25)
+            .then((res) => {
+              this.cells.current_page = res.data.current_page;
+              this.cells.pages = res.data.pages;
+              this.cells.data = this.cells.data.concat(res.data.data);
+            });
+        }
+      }
+    },
     putProduct(product) {
       this.$emit("setloading", true);
       let data = {
@@ -375,6 +453,7 @@ export default {
         last_price: product.Products.last_price,
         last_currency_id: product.Products.last_currency_id,
         code: product.Products.code,
+        cell_id: product.Products.cell_id,
       };
       api
         .updateProduct(data)

@@ -41,6 +41,7 @@
           <th>Artikul</th>
           <th>Marka</th>
           <th>Qoldiq</th>
+          <th>O'rni</th>
           <th>Narx</th>
           <th>Tan narx</th>
           <th>Minimal narx</th>
@@ -71,6 +72,7 @@
               item.Products.olchov_birligi
             }}
           </td>
+          <td>{{}}</td>
           <td>
             {{
               $util.currency(item.Products.price) +
