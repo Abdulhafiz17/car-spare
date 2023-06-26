@@ -252,7 +252,7 @@
           </div>
         </template>
         <template #cell>
-          <form id="edit-product" @submit.prevent="putProduct()">
+          <form id="edit-product" @submit.prevent="putProduct(product)">
             <div class="dropdown">
               <button
                 type="button"
@@ -272,6 +272,15 @@
                   style="max-height: 25vh"
                   @scroll="scrollCells($event)"
                 >
+                  <li
+                    class="list-group-item p-2"
+                    @click="
+                      cell = null;
+                      product.Products.cell_id = 0;
+                    "
+                  >
+                    Bo'sh
+                  </li>
                   <li
                     class="list-group-item p-2"
                     v-for="item in cells.data"
@@ -317,6 +326,7 @@ export default {
         Products: {
           code: 0,
           cell_id: 0,
+          cell: null,
           currency_id: 0,
           last_currency_id: 0,
           updated_code: 0,
@@ -397,6 +407,7 @@ export default {
         .productsForTrade(code)
         .then((res) => {
           this.product = res.data;
+          this.cell = this.product.Products.cell;
           this.getUnits();
         })
         .catch((err) => {
@@ -453,7 +464,7 @@ export default {
         last_price: product.Products.last_price,
         last_currency_id: product.Products.last_currency_id,
         code: product.Products.code,
-        cell_id: product.Products.cell_id,
+        cell_id: this.cell?.id || 0,
       };
       api
         .updateProduct(data)

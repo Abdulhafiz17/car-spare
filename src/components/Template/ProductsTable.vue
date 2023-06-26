@@ -72,7 +72,7 @@
               item.Products.olchov_birligi
             }}
           </td>
-          <td>{{}}</td>
+          <td>{{ item.Products.cell?.name || "" }}</td>
           <td>
             {{
               $util.currency(item.Products.price) +
