@@ -92,6 +92,15 @@
                   class="list-group-item"
                   v-for="item in customer_loans?.data"
                   :key="item"
+                  @click="
+                    take_loan = {
+                      id: item.Loans.id,
+                      money: null,
+                      type: 'naqd',
+                    }
+                  "
+                  data-toggle="modal"
+                  data-target="#pay-loan"
                 >
                   <span>
                     Summa:
@@ -189,6 +198,55 @@
     </div>
   </div>
 
+  <div class="modal fade" id="pay-loan">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>Nasiya uchun pul olish</h4>
+        </div>
+        <form @submit.prevent="postLoan(take_loan)">
+          <div class="modal-body">
+            <div class="row gap-2">
+              <div class="col-md-12">
+                <div class="input-group input-group-sm">
+                  <input
+                    type="number"
+                    min="0"
+                    step="any"
+                    class="form-control"
+                    placeholder="summa"
+                    required
+                    v-model="take_loan.money"
+                  />
+                  <div class="input-group-text">so'm</div>
+                  <div class="input-group-append">
+                    <select
+                      class="form-select form-select-sm"
+                      required
+                      v-model="take_loan.type"
+                    >
+                      <option value="naqd">naqd</option>
+                      <option value="plastik">plastik</option>
+                      <option value="click">click</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-outline-primary">
+              <i class="far fa-circle-check" />
+            </button>
+            <button class="btn btn-outline-danger" data-dismiss="modal">
+              <i class="far fa-circle-xmark" />
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <ModalMahsulotlar @setloading="setloading" ref="modalMahsulotlar" />
   <ModalReturnProduct
     :return_product="return_product"
@@ -208,6 +266,7 @@ import {
   trades,
   catchError,
   loans,
+  takeLoan,
 } from "@/components/Api/api";
 import ModalMahsulotlar from "./ModalMahsulotlar.vue";
 import ModalReturnProduct from "./ModalReturnProduct.vue";
@@ -229,6 +288,11 @@ export default {
       returned_products: [],
       return_product: null,
       return_status: null,
+      take_loan: {
+        id: 0,
+        money: null,
+        type: "naqd",
+      },
     };
   },
   created() {
@@ -352,6 +416,24 @@ export default {
           });
         }
       }
+    },
+    postLoan(loan) {
+      this.$emit("setloading", true);
+      takeLoan(Array(loan))
+        .then((Response) => {
+          success(1).then(() => {
+            this.take_loan = {
+              id: 0,
+              money: null,
+              type: "naqd",
+            };
+            this.getLoan();
+          });
+        })
+        .catch((error) => {
+          this.$emit("setloading", false);
+          catchError(error);
+        });
     },
   },
 };
